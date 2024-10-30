@@ -7,8 +7,9 @@
             body {
             background-color: #61707D;
             display: flex;
-            justify-content: c;
+            justify-content: center;
             flex-direction: column;
+            align-items: center;
             }
             button {
                 font-weight: bold;
@@ -56,7 +57,7 @@
                 }
             }
             
-            #cafe {
+            /*#cafe {
                 background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwGWSEXE_PzIsKNiOTYcVVIjt7CjD1txbjExKznfrjbDeUKQSh3q0-aOno8PZvqE3e1lP2-lMltO5oVmlOaNULfWHwKH8jHhFcyxwSxJd8rCLIjky-gcE98VNib42tenIsb1EKQKQC7izUr_2yIhKBG4qdY_tGPH5KXDnZTQ4eNVwhM7bJP4tzqMXFx7eK/s1280/la%20estrella1.jpg');
                 background-size: cover;
             }
@@ -75,7 +76,9 @@
                 display: flex;
                 justify-content: center;
                 padding: 0px;
-            }
+            }*/
+            
+            
             h1 {
                 color: white;
                 font-family: "Papyrus", fantasy;
@@ -91,7 +94,9 @@
             .fase {
                 display: flex;
                 justify-content: center;
-                flex-direction: column;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
             }
             h3 {
                 font-size: 30px;
@@ -103,39 +108,147 @@
                 color: white;
                 margin: 5px;
             }
+            
+            details {
+    width: 95%;
+    margin: 15px ;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    }
+
+    details[open] {
+    background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    summary {
+    cursor: pointer;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    border-radius: 15px;
+    text-align: center;
+    transition: background 0.3s, transform 0.2s;
+    margin-bottom: 10px;
+    }
+
+    summary:hover {
+    background: linear-gradient(90deg, #ffcc33, #ffb347);
+    transform: scale(1.05);
+    }
+
+    summary::marker {
+    font-size: 1.5rem;
+    color: white;
+    }
+    
+            .fase img {
+      width: 48%; /* Ocupa aproximadamente la mitad del espacio disponible */
+      height: auto;
+      max-width: 300px; /* Evita que las imágenes crezcan demasiado */
+      border-radius: 10px;
+      object-fit: cover; /* Asegura que las imágenes mantengan proporción */
+      cursor: pointer;
+      transition: transform 0.2s;
+           }
+            
+         /* Modal (para centrar la imagen en pantalla) */
+         .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 50%;
+      border-radius: 10px;
+    }
         </style>
         <div id="cultivo">
-        <h1>Café</h1>
+        <h1>Calendario lunar.</h1>
         </div>
         <hr>
-        <div class="titulos">
-        <h2>A continuación las actividades que se pueden realizar en cada fase lunar para este cultivo</h2>
+        <details>
+            <summary>2024</summary>
+        <div class="fase">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgm_zLT4QaymNHEd7M2uDT1f6rMZ9zKd6lkTiADhaosKMl10ua1pxog3YyW-7U_QH5ro9VjUZSpcJbaEvmGlCrM_EMKLCPYB9wjFebYLt9guZGXImp1wO5G7KXXBrZwF2tAJqQ6O2krqz_0Q4DB4fyKyeGDIUBnduljNy3QdfBgg9qTEBZZ4eNka8MFwfxI" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEivEcioHRMw5xL1EUsymmKpHpmTiNfsJ-ZV5st4jI8Ne1T2HoXtIAiiR8MZyLp0qcu2VXA0cHtEFc18ROx3H4daSChRNzMJaddcOPzY_7Atw83QFCG7rBIlOeGJKH-DD3z-DCZ7VXvLVXuU38fbYodJ1XY0Ic2PjAWSjZS2LADU83N6arPipIzvEHxpYupJ" onclick="openModal(this)">
         </div>
         <hr>
         <div class="fase">
-        <h3>Luna llena</h3>
-        <h4>• No soquear</h4>
-        <h4>• No transplantar</h4>
-        <h4>• Sembrar</h4>
-        <h4>• Fertilizar</h4>
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTvxSbdQ90wszn1KXctJPkAtRTXZ2hnCC6KPI2MHX-urSi7XomD8u2JTW25GuDEO7XacIT6vW8Bg_XlWO6gUZIC_ED-m66K5-sLqCvTSgkh4RtYAlMzIcbNqcZWXrKLE1_3PVS5Jhob03TRslEoNKNudR9__P-oMFu2U0rV1dHQ62ASagKywL0MlIiowzK" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiSYdd6rhQJpxiqDXBzPSw0i20RDAnXvOGdEHDU1dbqdFgW0lDwxSpYtHXoKAJGOYh81yNyvITGCttZT39BfefUXgQfrRuvHCpbWjE3qgCVd2T3Q1jn5lwvtx8dnvFZxXPyvpHvSCb6ZPdTumUkD2LP1wQGBAe30nGjdNRt-ZgaJq9DgoJjw39terO40IDc" onclick="openModal(this)">
         </div>
         <hr>
         <div class="fase">
-        <h3>Luna menguante</h3>
-        <h4>• Soquear</h4>
-        <h4>• Transplantar</h4>
-        <h4>• Abonar</h4>
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgzu2VZQP_G3-707NYvdJ8tQ3As3J58Z5srjCzjRuv2pHCgdTVUs5GBZOLNTgm8FW1T36hxZBTUUpo02SmQPUysG5SccDpy_LDjUvz6eiLc3DvHDiCnRQ1S3F-x2w83NWTl2TGFgp249ufwSWEGKmsYg99erAeLyZ5zSwEsN4lQ7RCsCwNdqczN1U2UXDnn" onclick="openModal(this)">
+        </div>
+        </details>
+        
+        <hr>
+        <details>
+            <summary>2025</summary>
+        <div class="fase">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5j0ZhKl-o82SnVTBQCxCUz0ywu9UAUQUlEO2ujVA723Uoz3yO3O5tmI118eY5KxhGVqdaeqHsOgv3zwGEpyibrXMGwnK0I6bSvalReFEvRcrwRylj2h_8Jg2iRRb3E1E5FSQm0fNaClM4V0sGZ3jUjGotD4Y_yJvzOmfa5MN87bVaLadkUqAaE7ukpJ8L" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjf9mq6EgFWStCcD8uAd7CFl_Dggb6OgyoC3kMt44sUyJDMC8tO7HSgUgYGgoDbef4CWcT2xrPNBKugC_gL0jEUkuXywPQHHlUROL6LzLzHZQwQLX2reee6OTolnF0JucZVIR4IpekF9kp2veSWS1NJ6fdd6ZUmAWSzcmy_q4aYMtqqSmoNsFgYzR0Ge0lC" onclick="openModal(this)">
         </div>
         <hr>
         <div class="fase">
-        <h3>Luna nueva</h3>
-        <h4>• No soquear</h4>
-        <h4>• Transplantar</h4>
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSW7ws3sH87Brbx33dR_jRU75Qv90ipDy43Ta79Qh22WxI6GV55kbluHDYboNIyNHSe8ULpRr6wIujqNCZ0IFqkyRSJVrA5P9a2AYRlQ3Q5nCcNGy0DMFJGjH-WesFDRxcU4C5MNGwQ7oDSBdAn0LBIw1oHzDdHvtoUHv2f85q9wkdBLOECEhgARV1N6SV" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSW7ws3sH87Brbx33dR_jRU75Qv90ipDy43Ta79Qh22WxI6GV55kbluHDYboNIyNHSe8ULpRr6wIujqNCZ0IFqkyRSJVrA5P9a2AYRlQ3Q5nCcNGy0DMFJGjH-WesFDRxcU4C5MNGwQ7oDSBdAn0LBIw1oHzDdHvtoUHv2f85q9wkdBLOECEhgARV1N6SV" onclick="openModal(this)">
         </div>
         <hr>
         <div class="fase">
-        <h3>Luna creciente</h3>
-        <h4>• No realizar ninguna actividad</h4>
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhhR_0tmcA8g21Ayg-KnP0DimVELdw5J5zAFHQP76GU5CcjpbwVO9Pdkahax0j56qXgBLOaDJ5uFAR69GBo0ZEOzmlUc-pVHgIVd3LgY83NjObF_kNSPCP70OEU_mBKJfG25BmhU4vr3vTDAAfYhS7u2R6R4cx4snSQ54e7-G0RmE2B_ZbIvPfcmyfiHIei" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhqkZV9rS-Z-a2_ZW8WMutPco_sSZL5ZiqC7-HVu99dVjmA4HZI4ryH3FHbHODSftiCy6AouBNvs_VtXXwH5dTkF5u6N5xlCswaTgnwmAt3EtU3SRsg-oZUE4nzK46Qy1K83Q00KrwgQUJKUjDk0HxoqctBwkcE7Cerv81ermEJL4WuquvijixIOrWwh1vD" onclick="openModal(this)">
         </div>
+        <hr>
+        <div class="fase">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhrl7An_INgW_YbFm3gW7M628KmHSvG2YT8rMvRLpI67PCL68apSGgwOwNzyOnZw-LEXf8i1d-i_4YZfUXgI56vNOE138zcnsoURxoDmI7UOFov59chG5PJKk6wUHhv76r7bpVlYR0pU1LtFf-poe6LgHUAXQCG58BTrlA8d70mI8ZsEueBr8To6MWGVhau" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiHHay_IQNAkt_cGxBokRC6fxGEW2uKF6au0KtFj5YHmK8rMs3bzPz5JnQLh7QieWwyKfud5302pw_H_z8alWdfHY2osl5pHgpWoVWBE3vGlrn3Tbu6fHlB_BlbA0IL7tCnh3O70fMcIwdjJRYlk01PJ5REtiFa27YPu6AiPYtM_ZGlyLKZoGdh-ivkzRSL" onclick="openModal(this)">
+        </div>
+        <hr>
+        <div class="fase">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjDAhiTFb_zq3KCQ1RiAa4KBN3Ylq-4cKYj5DkGZL9bK7-KQP8AMgVSSjbINiJUY-qg2XdZEtyHNdvByHT4SBsKOtrhixYJBwjMeQz-9cBxZdtKS7xf8w1zGaDfMj2zQ2MzU4MTRyG2VhLAU7jM4xwd3SDm7CfkQCj2KIZ3h2OwwdFOsGx5dXHaMBlCtFFp" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSCPyUYog3xIg_S4n3I5MYwC5mYzL5SElr41-5dd6dW_ol1ANe3q316kv2yzZ-551k8Ltd_hQOf039OIHmFOT78NvEW4tTzoRMyVYeUSAD_2OK9wyV9XGo8vedk2qk9N5kAmBxWyaDM4KOAFm-NQAvcGnQl4iWSdQd1ZgUJbrVmlmwwp9yB2w5NXXj7hzl" onclick="openModal(this)">
+        </div>
+        <hr>
+        <div class="fase">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjENVnFQVZ3jV-J0PmbMIM02EtTgonIJnmbATe5YrURAierCDwJ7huwuUkN2ET6OOAsGjYPk7rJvhvY-yKsenqm0pwUYKsnGKLybv-pycdjaxn7-0qgKWNeyR2RT1HZPSqBu-ImdlSFx0R1bJURsU_Irut2BaLEBTwPxnSCFn8akGyhz766LSJnzn0qEvU-" onclick="openModal(this)">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgGrdV5ekWryUPagX0k66wfGzGE81ZG5ACqWbU3RyPZq4VCJKid9ykyeBN2zWbWhgl6gwCDcUWeW7WUx3hz9P7pcPeMm35MNhcOYKkVZSRmd8cBFy-9Xwr03nLqFanc-MxJ-Zy6fLbvKWiVOL9IR5FxPerPyVttioVpbhmMOBMaPYWpPzyl3YINsX8jQdso" onclick="openModal(this)">
+        </div>
+        </details>
+          <!-- Modal para mostrar imagen -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <img id="modalImg" src="">
+  </div>
+
+  <script>
+    // Abre el modal y muestra la imagen seleccionada
+    function openModal(img) {
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = img.src;
+      modal.style.display = 'flex';
+    }
+
+    // Cierra el modal al hacer clic en cualquier parte del mismo
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+    }
+  </script>
     </body>
 </html>
