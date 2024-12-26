@@ -1,254 +1,134 @@
-<html>
-    <head>
-        
-    </head>
-    <body>
-        <style>
-            body {
-            background-color: #61707D;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            }
-            button {
-                font-weight: bold;
-                font-size: 15px;
-                margin: 20px;
-                height: 100px;
-                width: 200px;
-                border: solid 2px white;
-                border-radius: 50px;
-            }
-            
-            button:active {
-                font-weight: bold;
-                font-size: 15px;
-                margin: 20px;
-                height: 110px;
-                width: 220px;
-                border: solid 2px white;
-                border-radius: 50px;
-            }
-            .botones {
-                display: flex;
-                justify-content: center;
-            }
-            
-            .titulos {
-                color: white;
-            }
-            
-            hr {
-                width: 100%;
-                height: 3px;
-                border: none;
-                background: linear-gradient(90deg, white 0%, green 50%, white 100%);
-                background-size: 200%;
-                animation: moveGradient 3s infinite linear;
-            }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase Lunar - Agrolunar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo base */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #0d1b2a, #1b263b);
+            color: #e0e1dd;
+            text-align: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
 
-            @keyframes moveGradient {
-                0% {
-                    background-position: 0%;
+        h1, h2, h3 {
+            margin: 10px 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .moon-container {
+            margin: 20px auto;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #e0e1dd;
+            box-shadow: inset 20px 20px 50px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .phases-container {
+            margin-top: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            animation: slideUp 1.5s ease-in-out;
+        }
+
+        .phase {
+            margin: 10px 0;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="moon-container" id="moon-visual"></div>
+        <h1 id="current-phase-title">Cargando...</h1>
+        <h2 id="current-date-title">Cargando...</h2>
+    </div>
+    <div class="phases-container">
+        <h3 id="phases-title">Fases Lunares Próximas</h3>
+        <div id="phases-list"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const moonVisual = document.getElementById("moon-visual");
+            const currentPhaseTitle = document.getElementById("current-phase-title");
+            const currentDateTitle = document.getElementById("current-date-title");
+            const phasesList = document.getElementById("phases-list");
+
+            function calculateMoonPhase() {
+                const today = new Date();
+                const lunarCycle = 29.53058867; // Ciclo lunar en días
+                const knownNewMoon = new Date("2024-01-11T00:00:00Z"); // Luna nueva conocida
+                const daysSinceNewMoon = (today - knownNewMoon) / (1000 * 60 * 60 * 24);
+                const currentPhase = (daysSinceNewMoon % lunarCycle + lunarCycle) % lunarCycle;
+
+                const phases = [
+                    { name: "Luna Nueva", start: 0, end: 1.84566, color: "#0d1b2a" },
+                    { name: "Creciente Iluminante", start: 1.84566, end: 5.53699, color: "#1b263b" },
+                    { name: "Cuarto Creciente", start: 5.53699, end: 9.22831, color: "#3d5a80" },
+                    { name: "Gibosa Creciente", start: 9.22831, end: 12.91963, color: "#e0e1dd" },
+                    { name: "Luna Llena", start: 12.91963, end: 16.61096, color: "#ffffff" },
+                    { name: "Gibosa Menguante", start: 16.61096, end: 20.30228, color: "#e0e1dd" },
+                    { name: "Cuarto Menguante", start: 20.30228, end: 23.99361, color: "#3d5a80" },
+                    { name: "Creciente Menguante", start: 23.99361, end: 29.53058867, color: "#1b263b" }
+                ];
+
+                const currentPhaseData = phases.find(phase => currentPhase >= phase.start && currentPhase < phase.end);
+                const nextTwoMonths = [];
+
+                for (let i = 0; i < 60; i++) {
+                    const date = new Date();
+                    date.setDate(today.getDate() + i);
+                    const daysFromNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+                    const phase = phases.find(p => (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle >= p.start && (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle < p.end);
+                    nextTwoMonths.push({ date: date.toLocaleDateString("es-ES"), phase: phase.name });
                 }
-                100% {
-                    background-position: 100%;
-                }
-            }
-            
-            /*#cafe {
-                background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwGWSEXE_PzIsKNiOTYcVVIjt7CjD1txbjExKznfrjbDeUKQSh3q0-aOno8PZvqE3e1lP2-lMltO5oVmlOaNULfWHwKH8jHhFcyxwSxJd8rCLIjky-gcE98VNib42tenIsb1EKQKQC7izUr_2yIhKBG4qdY_tGPH5KXDnZTQ4eNVwhM7bJP4tzqMXFx7eK/s1280/la%20estrella1.jpg');
-                background-size: cover;
-            }
-            
-            #platano {
-                background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgqk1AeJ_YI53LE5GBmNgNwbpSOk84lA4bihahm-1raSJBVtv790fd_qSHrUHYs-1sm3C_eO6MCaorw26GDiPVn5rMf9ozlOUBAYKOiHHOJlnVunnCzObNyFpvxJ_fSNXTAotxSvp0DZChf-HOP_46GIIRthZN3Sq7XdxNw8-8GPm_p21og0MkXu8WNEdc/s1600/el%20reba%C3%B1o6.jpg');
-                background-size: cover;
-            }
-            
-            .resaltar {
-                border-radius: 10px;
-                background-color: rgba(255, 255, 255, 0.3);
-            }
-            
-            #cultivo {
-                display: flex;
-                justify-content: center;
-                padding: 0px;
-            }*/
-            
-            
-            h1 {
-                color: white;
-                font-family: "Papyrus", fantasy;
-                font-size: 60px;
-                padding: 0px;
-                margin-bottom:0;
-                margin-top: 10px;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            
-            .fase {
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-                flex-wrap: wrap;
-                margin-bottom: 10px;
-            }
-            h3 {
-                font-size: 30px;
-                margin: 10px;
-                color: white;
-            }
-            h4 {
-                font-size: 20px;
-                color: white;
-                margin: 5px;
-            }
-            
-            details {
-    width: 95%;
-    margin: 15px ;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    }
 
-    details[open] {
-    background-color: rgba(255, 255, 255, 0.4);
-    }
+                moonVisual.style.backgroundColor = currentPhaseData.color;
+                currentPhaseTitle.textContent = `Fase Lunar Actual: ${currentPhaseData.name}`;
+                currentDateTitle.textContent = `Fecha Actual: ${today.toLocaleDateString("es-ES")}`;
 
-    summary {
-    cursor: pointer;
-    padding: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    background: linear-gradient(90deg, #ffb347, #ffcc33);
-    border-radius: 15px;
-    text-align: center;
-    transition: background 0.3s, transform 0.2s;
-    margin-bottom: 10px;
-    }
+                phasesList.innerHTML = "";
+                nextTwoMonths.forEach(({ date, phase }) => {
+                    const phaseElement = document.createElement("p");
+                    phaseElement.className = "phase";
+                    phaseElement.textContent = `${date}: ${phase}`;
+                    phasesList.appendChild(phaseElement);
+                });
+            }
 
-    summary:hover {
-    background: linear-gradient(90deg, #ffcc33, #ffb347);
-    transform: scale(1.05);
-    }
-
-    summary::marker {
-    font-size: 1.5rem;
-    color: white;
-    }
-    
-            .fase img {
-      width: 48%; /* Ocupa aproximadamente la mitad del espacio disponible */
-      height: auto;
-      max-width: 300px; /* Evita que las imágenes crezcan demasiado */
-      border-radius: 10px;
-      object-fit: cover; /* Asegura que las imágenes mantengan proporción */
-      cursor: pointer;
-      transition: transform 0.2s;
-           }
-            
-         /* Modal (para centrar la imagen en pantalla) */
-         .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .modal img {
-      max-width: 90%;
-      max-height: 50%;
-      border-radius: 10px;
-    }
-        </style>
-        <div id="cultivo">
-        <h1>Calendario lunar.</h1>
-        </div>
-        <hr>
-        <details>
-            <summary>2024</summary>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgm_zLT4QaymNHEd7M2uDT1f6rMZ9zKd6lkTiADhaosKMl10ua1pxog3YyW-7U_QH5ro9VjUZSpcJbaEvmGlCrM_EMKLCPYB9wjFebYLt9guZGXImp1wO5G7KXXBrZwF2tAJqQ6O2krqz_0Q4DB4fyKyeGDIUBnduljNy3QdfBgg9qTEBZZ4eNka8MFwfxI" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEivEcioHRMw5xL1EUsymmKpHpmTiNfsJ-ZV5st4jI8Ne1T2HoXtIAiiR8MZyLp0qcu2VXA0cHtEFc18ROx3H4daSChRNzMJaddcOPzY_7Atw83QFCG7rBIlOeGJKH-DD3z-DCZ7VXvLVXuU38fbYodJ1XY0Ic2PjAWSjZS2LADU83N6arPipIzvEHxpYupJ" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTvxSbdQ90wszn1KXctJPkAtRTXZ2hnCC6KPI2MHX-urSi7XomD8u2JTW25GuDEO7XacIT6vW8Bg_XlWO6gUZIC_ED-m66K5-sLqCvTSgkh4RtYAlMzIcbNqcZWXrKLE1_3PVS5Jhob03TRslEoNKNudR9__P-oMFu2U0rV1dHQ62ASagKywL0MlIiowzK" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiSYdd6rhQJpxiqDXBzPSw0i20RDAnXvOGdEHDU1dbqdFgW0lDwxSpYtHXoKAJGOYh81yNyvITGCttZT39BfefUXgQfrRuvHCpbWjE3qgCVd2T3Q1jn5lwvtx8dnvFZxXPyvpHvSCb6ZPdTumUkD2LP1wQGBAe30nGjdNRt-ZgaJq9DgoJjw39terO40IDc" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgzu2VZQP_G3-707NYvdJ8tQ3As3J58Z5srjCzjRuv2pHCgdTVUs5GBZOLNTgm8FW1T36hxZBTUUpo02SmQPUysG5SccDpy_LDjUvz6eiLc3DvHDiCnRQ1S3F-x2w83NWTl2TGFgp249ufwSWEGKmsYg99erAeLyZ5zSwEsN4lQ7RCsCwNdqczN1U2UXDnn" onclick="openModal(this)">
-        </div>
-        </details>
-        
-        <hr>
-        <details>
-            <summary>2025</summary>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5j0ZhKl-o82SnVTBQCxCUz0ywu9UAUQUlEO2ujVA723Uoz3yO3O5tmI118eY5KxhGVqdaeqHsOgv3zwGEpyibrXMGwnK0I6bSvalReFEvRcrwRylj2h_8Jg2iRRb3E1E5FSQm0fNaClM4V0sGZ3jUjGotD4Y_yJvzOmfa5MN87bVaLadkUqAaE7ukpJ8L" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjf9mq6EgFWStCcD8uAd7CFl_Dggb6OgyoC3kMt44sUyJDMC8tO7HSgUgYGgoDbef4CWcT2xrPNBKugC_gL0jEUkuXywPQHHlUROL6LzLzHZQwQLX2reee6OTolnF0JucZVIR4IpekF9kp2veSWS1NJ6fdd6ZUmAWSzcmy_q4aYMtqqSmoNsFgYzR0Ge0lC" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSW7ws3sH87Brbx33dR_jRU75Qv90ipDy43Ta79Qh22WxI6GV55kbluHDYboNIyNHSe8ULpRr6wIujqNCZ0IFqkyRSJVrA5P9a2AYRlQ3Q5nCcNGy0DMFJGjH-WesFDRxcU4C5MNGwQ7oDSBdAn0LBIw1oHzDdHvtoUHv2f85q9wkdBLOECEhgARV1N6SV" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSW7ws3sH87Brbx33dR_jRU75Qv90ipDy43Ta79Qh22WxI6GV55kbluHDYboNIyNHSe8ULpRr6wIujqNCZ0IFqkyRSJVrA5P9a2AYRlQ3Q5nCcNGy0DMFJGjH-WesFDRxcU4C5MNGwQ7oDSBdAn0LBIw1oHzDdHvtoUHv2f85q9wkdBLOECEhgARV1N6SV" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhhR_0tmcA8g21Ayg-KnP0DimVELdw5J5zAFHQP76GU5CcjpbwVO9Pdkahax0j56qXgBLOaDJ5uFAR69GBo0ZEOzmlUc-pVHgIVd3LgY83NjObF_kNSPCP70OEU_mBKJfG25BmhU4vr3vTDAAfYhS7u2R6R4cx4snSQ54e7-G0RmE2B_ZbIvPfcmyfiHIei" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhqkZV9rS-Z-a2_ZW8WMutPco_sSZL5ZiqC7-HVu99dVjmA4HZI4ryH3FHbHODSftiCy6AouBNvs_VtXXwH5dTkF5u6N5xlCswaTgnwmAt3EtU3SRsg-oZUE4nzK46Qy1K83Q00KrwgQUJKUjDk0HxoqctBwkcE7Cerv81ermEJL4WuquvijixIOrWwh1vD" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhrl7An_INgW_YbFm3gW7M628KmHSvG2YT8rMvRLpI67PCL68apSGgwOwNzyOnZw-LEXf8i1d-i_4YZfUXgI56vNOE138zcnsoURxoDmI7UOFov59chG5PJKk6wUHhv76r7bpVlYR0pU1LtFf-poe6LgHUAXQCG58BTrlA8d70mI8ZsEueBr8To6MWGVhau" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiHHay_IQNAkt_cGxBokRC6fxGEW2uKF6au0KtFj5YHmK8rMs3bzPz5JnQLh7QieWwyKfud5302pw_H_z8alWdfHY2osl5pHgpWoVWBE3vGlrn3Tbu6fHlB_BlbA0IL7tCnh3O70fMcIwdjJRYlk01PJ5REtiFa27YPu6AiPYtM_ZGlyLKZoGdh-ivkzRSL" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjDAhiTFb_zq3KCQ1RiAa4KBN3Ylq-4cKYj5DkGZL9bK7-KQP8AMgVSSjbINiJUY-qg2XdZEtyHNdvByHT4SBsKOtrhixYJBwjMeQz-9cBxZdtKS7xf8w1zGaDfMj2zQ2MzU4MTRyG2VhLAU7jM4xwd3SDm7CfkQCj2KIZ3h2OwwdFOsGx5dXHaMBlCtFFp" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgSCPyUYog3xIg_S4n3I5MYwC5mYzL5SElr41-5dd6dW_ol1ANe3q316kv2yzZ-551k8Ltd_hQOf039OIHmFOT78NvEW4tTzoRMyVYeUSAD_2OK9wyV9XGo8vedk2qk9N5kAmBxWyaDM4KOAFm-NQAvcGnQl4iWSdQd1ZgUJbrVmlmwwp9yB2w5NXXj7hzl" onclick="openModal(this)">
-        </div>
-        <hr>
-        <div class="fase">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjENVnFQVZ3jV-J0PmbMIM02EtTgonIJnmbATe5YrURAierCDwJ7huwuUkN2ET6OOAsGjYPk7rJvhvY-yKsenqm0pwUYKsnGKLybv-pycdjaxn7-0qgKWNeyR2RT1HZPSqBu-ImdlSFx0R1bJURsU_Irut2BaLEBTwPxnSCFn8akGyhz766LSJnzn0qEvU-" onclick="openModal(this)">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgGrdV5ekWryUPagX0k66wfGzGE81ZG5ACqWbU3RyPZq4VCJKid9ykyeBN2zWbWhgl6gwCDcUWeW7WUx3hz9P7pcPeMm35MNhcOYKkVZSRmd8cBFy-9Xwr03nLqFanc-MxJ-Zy6fLbvKWiVOL9IR5FxPerPyVttioVpbhmMOBMaPYWpPzyl3YINsX8jQdso" onclick="openModal(this)">
-        </div>
-        </details>
-          <!-- Modal para mostrar imagen -->
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modalImg" src="">
-  </div>
-
-  <script>
-    // Abre el modal y muestra la imagen seleccionada
-    function openModal(img) {
-      const modal = document.getElementById('modal');
-      const modalImg = document.getElementById('modalImg');
-      modalImg.src = img.src;
-      modal.style.display = 'flex';
-    }
-
-    // Cierra el modal al hacer clic en cualquier parte del mismo
-    function closeModal() {
-      const modal = document.getElementById('modal');
-      modal.style.display = 'none';
-    }
-  </script>
-    </body>
+            calculateMoonPhase();
+        });
+    </script>
+</body>
 </html>
