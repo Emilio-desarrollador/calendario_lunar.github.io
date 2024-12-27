@@ -43,7 +43,18 @@
 
         .phase {
             margin: 10px 0;
-            animation: fadeIn 1.5s ease-in-out;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 1.1em;
+            color: #e0e1dd;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .phase:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
         }
 
         @keyframes fadeIn {
@@ -140,9 +151,11 @@
                 groupedPhases.forEach(({ phase, startDate, endDate }) => {
                     const start = startDate.toLocaleDateString("es-ES");
                     const end = endDate ? endDate.toLocaleDateString("es-ES") : "Sin definir";
-                    const phaseElement = document.createElement("p");
+                    const phaseElement = document.createElement("div");
                     phaseElement.className = "phase";
-                    phaseElement.textContent = `${phase}: del ${start} al ${end}`;
+                    phaseElement.innerHTML = `
+                        <strong>${phase}:</strong> del ${start} al ${end}
+                    `;
                     phasesList.appendChild(phaseElement);
                 });
             }
