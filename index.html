@@ -6,7 +6,6 @@
     <title>Fase Lunar - Agrolunar</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Estilo base */
         body {
             margin: 0;
             padding: 0;
@@ -72,6 +71,7 @@
     <div>
         <div class="moon-container" id="moon-visual"></div>
         <h1 id="current-phase-title">Cargando...</h1>
+        <h2 id="days-to-end-title">Cargando...</h2>
         <h2 id="current-date-title">Cargando...</h2>
     </div>
     <div class="phases-container">
@@ -83,6 +83,7 @@
             const moonVisual = document.getElementById("moon-visual");
             const currentPhaseTitle = document.getElementById("current-phase-title");
             const currentDateTitle = document.getElementById("current-date-title");
+            const daysToEndTitle = document.getElementById("days-to-end-title");
             const phasesList = document.getElementById("phases-list");
 
             function calculateMoonPhase() {
@@ -100,25 +101,48 @@
                 ];
 
                 const currentPhaseData = phases.find(phase => currentPhase >= phase.start && currentPhase < phase.end);
-                const nextTwoMonths = [];
+                const daysToEnd = Math.ceil(currentPhaseData.end - currentPhase);
 
-                for (let i = 0; i < 60; i++) {
-                    const date = new Date();
-                    date.setDate(today.getDate() + i);
-                    const daysFromNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
-                    const phase = phases.find(p => (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle >= p.start && (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle < p.end);
-                    nextTwoMonths.push({ date: date.toLocaleDateString("es-ES"), phase: phase.name });
-                }
-
+                // Mostrar datos actuales
                 moonVisual.style.backgroundColor = currentPhaseData.color;
                 currentPhaseTitle.textContent = `Fase Lunar Actual: ${currentPhaseData.name}`;
+                daysToEndTitle.textContent = `Finalizará en ${daysToEnd} días`;
                 currentDateTitle.textContent = `Fecha Actual: ${today.toLocaleDateString("es-ES")}`;
 
+                // Agrupación de fases próximas
+                const endDate = new Date();
+                endDate.setMonth(today.getMonth() + 3);
+                const groupedPhases = [];
+                let currentDate = new Date(today);
+
+                while (currentDate <= endDate) {
+                    const daysFromNewMoon = (currentDate - knownNewMoon) / (1000 * 60 * 60 * 24);
+                    const phase = phases.find(p => (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle >= p.start && (daysFromNewMoon % lunarCycle + lunarCycle) % lunarCycle < p.end);
+
+                    if (
+                        groupedPhases.length === 0 ||
+                        groupedPhases[groupedPhases.length - 1].phase !== phase.name
+                    ) {
+                        groupedPhases.push({
+                            phase: phase.name,
+                            startDate: new Date(currentDate),
+                            endDate: null
+                        });
+                    } else {
+                        groupedPhases[groupedPhases.length - 1].endDate = new Date(currentDate);
+                    }
+
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+
+                // Mostrar fases agrupadas
                 phasesList.innerHTML = "";
-                nextTwoMonths.forEach(({ date, phase }) => {
+                groupedPhases.forEach(({ phase, startDate, endDate }) => {
+                    const start = startDate.toLocaleDateString("es-ES");
+                    const end = endDate ? endDate.toLocaleDateString("es-ES") : "Sin definir";
                     const phaseElement = document.createElement("p");
                     phaseElement.className = "phase";
-                    phaseElement.textContent = `${date}: ${phase}`;
+                    phaseElement.textContent = `${phase}: del ${start} al ${end}`;
                     phasesList.appendChild(phaseElement);
                 });
             }
