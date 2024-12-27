@@ -94,13 +94,9 @@
 
                 const phases = [
                     { name: "Luna Nueva", start: 0, end: 1.84566, color: "#0d1b2a" },
-                    { name: "Creciente Iluminante", start: 1.84566, end: 5.53699, color: "#1b263b" },
-                    { name: "Cuarto Creciente", start: 5.53699, end: 9.22831, color: "#3d5a80" },
-                    { name: "Gibosa Creciente", start: 9.22831, end: 12.91963, color: "#e0e1dd" },
-                    { name: "Luna Llena", start: 12.91963, end: 16.61096, color: "#ffffff" },
-                    { name: "Gibosa Menguante", start: 16.61096, end: 20.30228, color: "#e0e1dd" },
-                    { name: "Cuarto Menguante", start: 20.30228, end: 23.99361, color: "#3d5a80" },
-                    { name: "Creciente Menguante", start: 23.99361, end: 29.53058867, color: "#1b263b" }
+                    { name: "Luna Creciente", start: 1.84566, end: 14.76529, color: "#3d5a80" },
+                    { name: "Luna Llena", start: 14.76529, end: 16.61096, color: "#ffffff" },
+                    { name: "Luna Menguante", start: 16.61096, end: 29.53058867, color: "#1b263b" }
                 ];
 
                 const currentPhaseData = phases.find(phase => currentPhase >= phase.start && currentPhase < phase.end);
